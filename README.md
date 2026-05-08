@@ -1,36 +1,69 @@
-# cluster setup
+# Cluster Setup
 
-## Setup (once)
+## Setup (one time)
 
 ```bash
 git clone https://github.com/datavorous/cluster-setup.git
 cd ~/cluster-setup
 srun -p u22 -A SLURM_ACCOUNT --gres=gpu:1 -c 4 --time=00:30:00 --pty bash
-bash setup.sh
+bash setup/setup.sh
+exit
 ```
 
-## Run
+## Before running anything
 
 ```bash
 cd ~/cluster-setup
-source env.sh
+source setup/env.sh
 pixi shell
-python src/train.py
 ```
 
-## Structure
+## Directory structure
 
-- `src/`: training code and models
-- `configs/`: YAML configs
-- `scripts/`: utility scripts
-- `pixi.toml`: Python dependencies
-- `env.sh`: sets `SCRATCH`, `HF_HOME`, `CHECKPOINTS_DIR`, `EXPERIMENTS_DIR`
+- `src/`: your training code
+- `configs/`: your config files
+- `scripts/`: utility scripts (demo.py to test)
+- `setup/`: initialization scripts
 
-## Storage
+## Environment variables 
 
-| Path | Content |
-|------|---------|
-| `/scratch/$USER/hf_cache` | Hugging Face models |
-| `/scratch/$USER/checkpoints` | Model checkpoints |
-| `/scratch/$USER/experiments` | Experiment logs |
-| `/scratch/$USER/outputs` | Final outputs |
+Available after `source setup/env.sh`
+
+```bash
+SCRATCH=/scratch/$USER # ephemeral node-local storage
+HF_HOME=/scratch/$USER/hf_cache # Hugging Face models
+CHECKPOINTS_DIR=/scratch/$USER/checkpoints # your checkpoints
+EXPERIMENTS_DIR=/scratch/$USER/experiments # your logs/outputs
+```
+
+Use these in your code. `/scratch` is fast and deleted after job ends. Store everything there.
+
+## Run your script
+
+```bash
+python src/script.py
+```
+
+## Test setup
+
+```bash
+python scripts/demo.py
+```
+
+## Submit batch job
+
+Create `job.sh`:
+
+```bash
+#!/bin/bash
+#SBATCH --job-name=train
+#SBATCH --partition=u22
+#SBATCH --gres=gpu:4
+#SBATCH --time=12:00:00
+
+source setup/env.sh
+pixi shell
+python src/script.py
+```
+
+Then: `sbatch job.sh`
