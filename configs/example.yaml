@@ -1,0 +1,8 @@
+model:
+  name: "facebook/opt-125m"
+  dtype: "float16"
+
+training:
+  epochs: 3
+  batch_size: 32
+  learning_rate: 1e-4

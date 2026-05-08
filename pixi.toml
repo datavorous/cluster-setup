@@ -12,7 +12,5 @@ extra-index-urls = ["https://download.pytorch.org/whl/cu126"]
 
 [pypi-dependencies]
 torch = "==2.6.*"
-torchvision = "==0.17.*"
-torchaudio = "==2.6.*"
 transformers = ">=4.51"
 accelerate = ">=1.6"
