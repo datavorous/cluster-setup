@@ -1,17 +1,18 @@
 [workspace]
 name = "research"
-channels = ["pytorch", "nvidia", "conda-forge"]
+channels = ["conda-forge"]
 platforms = ["linux-64"]
 
 [dependencies]
 python = "3.11.*"
-pytorch = "2.11.*"
-pytorch-cuda = "12.4.*"
+
+[pypi-options]
+index-url = "https://pypi.org/simple"
+extra-index-urls = ["https://download.pytorch.org/whl/cu126"]
 
 [pypi-dependencies]
+torch = "==2.6.*"
+torchvision = "==0.17.*"
+torchaudio = "==2.6.*"
 transformers = ">=4.51"
 accelerate = ">=1.6"
-
-[activation.env]
-HF_HOME = "${SCRATCH}/hf_cache"
-HF_HUB_CACHE = "${SCRATCH}/hf_cache/hub"

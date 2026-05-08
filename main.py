@@ -6,7 +6,7 @@ tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = OPTForCausalLM.from_pretrained(model_name, torch_dtype=torch.float16).to("cuda")
 model.eval()
 
-prompt = "The meaning of life is"
+prompt = "Tokyo is the capital of"
 inputs = tokenizer(prompt, return_tensors="pt").to("cuda")
 with torch.no_grad():
     out = model.generate(**inputs, max_new_tokens=50)
